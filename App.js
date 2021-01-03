@@ -15,18 +15,15 @@ const App = () => {
   console.log('App');
   const [token, setToken] = useState({});
 
-  /// Set Token to pass to TokenData and  TokenList
-  const handleAddToken = useCallback(token => setToken(token), []);
-
-  /// Force a re-render of TokenList
-  const handleRemoveToken = useCallback(() => setToken({}), []);
+  /// Set Token to pass to TokenData and TokenList
+  const handleAddToken = useCallback(token => setToken({ ...token }), []);
 
   return (
     <div>
       <main className="app">
         <TokenInput handler={handleAddToken} />
         <TokenData token={token} />
-        <TokenList newToken={token} handler={handleRemoveToken} />
+        <TokenList newToken={token} />
       </main>
     </div>
   );
@@ -61,7 +58,10 @@ const TokenInput = ({ handler }) => {
   /// Get Token Master List
   useEffect(() => {
     (async () => {
-      fetch('https://coingecko.p.rapidapi.com/coins/list', COINGECKO_HEADERS)
+      await fetch(
+        'https://coingecko.p.rapidapi.com/coins/list',
+        COINGECKO_HEADERS
+      )
         .then(response => response.json())
         .then(response => setTokens(response))
         .catch(err => console.error(err));
@@ -96,7 +96,7 @@ const TokenData = ({ token }) => {
   /// Get Token Data
   useEffect(() => {
     if (Object.keys(token).length === 0) return;
-    const promiseApi = async () => {
+    const promiseApi = () => {
       return fetch(
         `https://coingecko.p.rapidapi.com/coins/${token.id}?developer_data=true&market_data=true&sparkline=false&community_data=true&localization=true&tickers=true`,
         COINGECKO_HEADERS
@@ -104,10 +104,9 @@ const TokenData = ({ token }) => {
     };
 
     (async () => {
-      promiseApi()
+      await promiseApi()
         .then(response => {
-          const obj = { promiseApi, ...response };
-          setTokenData(obj);
+          setTokenData({ promiseApi, ...response });
         })
         .catch(err => console.error(err));
     })();
@@ -131,7 +130,7 @@ const TokenData = ({ token }) => {
 };
 
 ///// <TokenList></TokenList>
-const TokenList = ({ newToken, handler }) => {
+const TokenList = ({ newToken }) => {
   console.log('TokenList');
   const [list, setList] = useState([]);
 
@@ -146,13 +145,11 @@ const TokenList = ({ newToken, handler }) => {
     });
   }, [newToken]);
 
-  const handleRemove = useCallback(
-    token => {
-      handler(newToken);
-      setList(list => list.filter(el => el.symbol !== token.symbol));
-    },
-    [newToken, handler]
-  );
+  const handleRemove = useCallback(token => {
+    // handler(newToken);
+    console.log('handleRemove');
+    setList(list => list.filter(el => el.symbol !== token.symbol));
+  }, []);
 
   return (
     <div className="movements">
@@ -169,13 +166,13 @@ const TokenRow = ({ token, handler }) => {
   //   console.log('TokenRow');
   const [tokenData, setTokenData] = useState({});
   const isTickOn = useRef(true);
-  const handleRemove = useCallback(
-    e => {
-      isTickOn.current = false;
-      handler(token);
-    },
-    [token, handler]
-  );
+
+  const handleClick = e => {
+    e.preventDefault();
+    console.log('handleclick');
+    isTickOn.current = false;
+    handler(token);
+  };
 
   /// Refresh Token Data every 2 seconds
   /// Controlled by isTickOn useRef
@@ -237,7 +234,7 @@ const TokenRow = ({ token, handler }) => {
       </label>
       <label className="">{tokenData?.asOfDate?.toLocaleTimeString()}</label>
       {tokenData && (
-        <button className="" onClick={handleRemove}>
+        <button className="" onClick={handleClick}>
           Remove
         </button>
       )}

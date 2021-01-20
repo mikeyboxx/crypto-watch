@@ -163,7 +163,13 @@ const TradePopUp = ({ coin, balance, handler }) => {
 
   return (
     <>
-      <div style={isClosed ? { ...style.modal, ...style.hidden } : style.modal}>
+      <div
+        style={
+          isClosed || !apiData
+            ? { ...style.modal, ...style.hidden }
+            : style.modal
+        }
+      >
         <div style={style.top}>
           <div style={style.logo}>
             <div style={style.name}>{tokenData?.name}</div>

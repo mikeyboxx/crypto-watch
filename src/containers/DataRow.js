@@ -23,7 +23,15 @@ const DataRow = ({ columns, data, handleTradeButton }) => {
             column={column}
             handler={handleTradeButtonClick}
             dataItem={
-              column.name.length === 0 ? column.title : data[column.name]
+              column.name.length === 0
+                ? column.title
+                : // if column is current_price, pass object with current and prev price, to be used for stying logic
+                column.name === 'current_price'
+                ? {
+                    current_price: data.current_price,
+                    prev_price: data.prev_price,
+                  }
+                : data[column.name]
             }
           />
         );

@@ -34,7 +34,22 @@ export default function useGetCoinGeckoData() {
           },
         });
         const data = await response.json();
-        setData(data);
+        //generate extra column, prev_price
+        if (queryParams?.reqType === 'detail')
+          setData(old => {
+            if (!old) data.prev_price = data.current_price;
+            else data.prev_price = old.current_price;
+            return { ts: performance.now() + Date.now(), ...data };
+          });
+        else
+          setData(old => {
+            const transformedData = data?.map((item, idx) => {
+              if (!old) item.prev_price = item.current_price;
+              else item.prev_price = old[idx].current_price;
+              return { ts: performance.now() + Date.now(), ...item };
+            });
+            return transformedData;
+          });
       } catch (err) {
         console.error(err);
         setData(err);

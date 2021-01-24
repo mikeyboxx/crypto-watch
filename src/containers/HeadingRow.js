@@ -1,6 +1,6 @@
 import HeadingItem from '../components/HeadingItem';
 
-const HeadingRow = ({ columns, sortHandler }) => {
+const HeadingRow = ({ columns, sortCol, sortHandler }) => {
   // console.log('HeadingRow');
   const style = {
     container: {
@@ -14,7 +14,12 @@ const HeadingRow = ({ columns, sortHandler }) => {
     <div style={style.container}>
       {columns.map((column, index) => {
         return (
-          <HeadingItem key={index} column={column} sortHandler={sortHandler} />
+          <HeadingItem
+            key={index}
+            column={column}
+            sortCol={sortCol}
+            sortHandler={sortHandler}
+          />
         );
       })}
     </div>

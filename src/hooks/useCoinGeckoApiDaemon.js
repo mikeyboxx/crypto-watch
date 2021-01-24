@@ -11,35 +11,41 @@ export default function useCoinGeckoApiDaemon() {
   const [sortParams, setSortParams] = useState({});
   const [filterParams, setFilterParams] = useState([]);
   const [startDaemon, setStartDaemon] = useState(false);
+  const [interval, setInterval] = useState(0);
   const [timerCount, setTimerCount] = useState(0);
 
-  const runDaemon = useCallback((startDaemon, sortParams, filterParams) => {
-    sortParams && setSortParams(sortParams);
-    filterParams && setFilterParams(filterParams);
-    setStartDaemon(startDaemon);
-  }, []);
+  const runDaemon = useCallback(
+    (startDaemon, interval, sortParams, filterParams) => {
+      sortParams && setSortParams(sortParams);
+      filterParams && setFilterParams(filterParams);
+      setInterval(interval);
+      setStartDaemon(startDaemon);
+    },
+    []
+  );
 
   useEffect(() => {
     const tick = async () => {
       console.log('tick');
       getApiData();
-      setTimeout(() => setTimerCount(timerCount + 1), 3000);
+      setTimeout(() => setTimerCount(timerCount + 1), interval);
     };
 
     startDaemon && tick();
-  }, [startDaemon, timerCount, getApiData]);
+  }, [startDaemon, interval, timerCount, getApiData]);
 
   useEffect(() => {
     if (apiData) {
       apiData instanceof Error
         ? setStartDaemon(false)
-        : apiData.length > 0 && sortApiData(apiData, sortParams);
+        : apiData.length > 0 && sortApiData([...apiData], sortParams);
     }
   }, [apiData, sortParams, sortApiData]);
 
   useEffect(() => {
     if (sortedApiData) {
-      sortedApiData.length > 0 && filterApiData(sortedApiData, filterParams);
+      sortedApiData.length > 0 &&
+        filterApiData([...sortedApiData], filterParams);
     }
   }, [sortedApiData, filterParams, filterApiData]);
 

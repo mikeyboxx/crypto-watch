@@ -47,8 +47,9 @@ const BottomPanel = ({ handler }) => {
 
   const handleTradeButton = useCallback(dataRow => handler(dataRow), [handler]);
 
+  // starts the CoinGecko data retrieval. Pass time interval to control how often data gets refreshed. Optionally pass it default sort column, and/or filter criteria.
   useEffect(() => {
-    runDaemon(true);
+    runDaemon(true, 30000);
   }, [runDaemon]);
 
   useEffect(() => {
@@ -58,7 +59,11 @@ const BottomPanel = ({ handler }) => {
   return (
     <div style={style.container}>
       {sortedAndFilteredApiData && (
-        <HeadingRow columns={columns} sortHandler={sortHandler} />
+        <HeadingRow
+          columns={columns}
+          sortCol={sortColumn}
+          sortHandler={sortHandler}
+        />
       )}
 
       {sortedAndFilteredApiData &&

@@ -6,7 +6,7 @@ export default function useSortCoinGeckoData() {
 
   const sortData = useCallback((data, sortParams) => {
     let sortableItems = [...data];
-    sortableItems.sort((a, b) => {
+    sortableItems?.sort((a, b) => {
       if (a[sortParams?.key] < b[sortParams?.key]) {
         return sortParams?.direction === 'ascending' ? -1 : 1;
       }

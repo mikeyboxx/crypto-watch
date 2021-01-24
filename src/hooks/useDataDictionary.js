@@ -9,58 +9,73 @@ export default function useDataDictionary() {
         name: 'name',
         title: 'Coin',
         type: 'text',
-        width: '120px',
-        justify: 'start',
+        style: {
+          minWidth: '120px',
+          justifyContent: 'flex-start',
+        },
       },
       {
         name: 'current_price',
         title: 'Last Price',
         type: 'number',
-        width: '100px',
-        justify: 'end',
+        style: {
+          minWidth: '100px',
+          justifyContent: 'flex-end',
+        },
       },
       {
         name: 'price_change_percentage_24h',
         title: '24h Change',
         type: 'percent',
-        width: '100px',
-        justify: 'end',
+        style: {
+          minWidth: '100px',
+          justifyContent: 'flex-end',
+        },
       },
       {
         name: 'high_24h',
         title: '24h High',
         type: 'number',
-        width: '100px',
-        justify: 'end',
+        style: {
+          minWidth: '100px',
+          justifyContent: 'flex-end',
+        },
       },
       {
         name: 'low_24h',
         title: '24h Low',
         type: 'number',
-        width: '100px',
-        justify: 'end',
+        style: {
+          minWidth: '100px',
+          justifyContent: 'flex-end',
+        },
       },
       {
         name: 'market_cap',
         title: 'Market Cap',
         type: 'currency',
-        width: '150px',
-        justify: 'end',
+        style: {
+          minWidth: '150px',
+          justifyContent: 'flex-end',
+        },
       },
       {
         name: 'total_volume',
         title: '24h Volume',
         type: 'number',
-        width: '120px',
-        justify: 'end',
+        style: {
+          minWidth: '120px',
+          justifyContent: 'flex-end',
+        },
       },
       {
         name: '',
         title: 'Trade',
         type: 'button',
-        width: '90px',
-        justify: 'center',
-        //   buttonHandler: handler,
+        style: {
+          minWidth: '90px',
+          justifyContent: 'center',
+        },
       },
     ];
     setColumns(cols);

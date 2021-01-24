@@ -4,7 +4,7 @@ export default function useFilterCoinGeckoData() {
   const [filteredData, setFilteredData] = useState(null);
 
   const filterData = useCallback((data, filterParams) => {
-    const filterableItems = [...data].filter(item => {
+    const filterableItems = data?.filter(item => {
       let conditionMet = true;
 
       filterParams?.forEach(param => {

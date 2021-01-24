@@ -154,7 +154,6 @@ const TradePopUp = ({ coin, balance, handler }) => {
   }, [coin, getApiData]);
 
   useEffect(() => {
-    // setIsClosed(false);
     if (apiData && apiData?.length !== 0) {
       setTokenData(apiData);
       setIsClosed(false);
@@ -188,7 +187,6 @@ const TradePopUp = ({ coin, balance, handler }) => {
             <input
               type="number"
               step="0.01"
-              // min="0"
               style={style.amount}
               placeholder="Enter Token Amount"
               onChange={handleInput}
